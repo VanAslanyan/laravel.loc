@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
         Subscriber::factory(10)->create();
 
         $this->call([
-//            User::class,
         ]);
 
     }

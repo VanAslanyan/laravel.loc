@@ -32,7 +32,6 @@ class SendingEmail implements ShouldQueue
      */
     public function handle(): void
     {
-
         foreach ($this->user as $email) {
             Mail::to($email->email)->send(new EmailForm($this->data));
         }

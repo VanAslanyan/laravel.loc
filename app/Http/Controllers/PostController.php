@@ -38,6 +38,8 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $website_id = $request->website_id;
+        $website = Website::select()->where('id', '=', $website_id)->first();
+        $website_name = parse_url($website->url, PHP_URL_HOST);
         $title = $request->title;
         $description = $request->description;
         if (Website::where('id', $website_id)->exists()) {
@@ -53,14 +55,17 @@ class PostController extends Controller
         if ($post) {
             $subscribers = Subscriber::select()->where('website_id', '=', $website_id)->get();
             $chunkSubscribers = $subscribers->chunk(100);
-            foreach ($chunkSubscribers as $subscriber) {
-                foreach ($subscriber as $users)
-                    $user = User::select()->where('id', $users->user_id)->get();
-                $data = array(
-                    'title' => $title,
-                    'description' => $description,
-                );
-                dispatch(new SendingEmail($user, $data));
+            foreach ($chunkSubscribers as $subscribers) {
+                foreach ($subscribers as $users) {
+                    $user_id = $users->user_id;
+                    $user = User::where('id', '=', $user_id)->get();
+                    $data = array(
+                        'website_name' => $website_name,
+                        'title' => $title,
+                        'description' => $description,
+                    );
+                    SendingEmail::dispatch($data, $user);
+                }
             }
         } else {
             return abort(404);
@@ -70,7 +75,8 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public
+    function show(string $id)
     {
         //
     }
@@ -78,7 +84,8 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public
+    function edit(string $id)
     {
         //
     }
@@ -86,7 +93,8 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public
+    function update(Request $request, string $id)
     {
         //
     }
@@ -94,8 +102,9 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public
+    function destroy(string $id)
     {
-        //
+
     }
 }

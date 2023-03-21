@@ -9,8 +9,9 @@
 </head>
 <body>
 
-<p>Title:{{$data['title']}}</p>
-<p>Description:{{$data['description']}}</p>
+<p>Title : {{$data['title']}}</p>
+<p>Description : {{$data['description']}}</p>
+
 
 
 

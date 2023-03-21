@@ -18,9 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/',[UserController::class,'index']);
-//Route::post('/store',[UserController::class,'store'])->name('store');
-//Route::post('/post',[PostController::class,'store'])->name('post');
 Route::resource('user',UserController::class);
 Route::resource('post',PostController::class);
 Route::resource('subscribe',SubscribeController::class);

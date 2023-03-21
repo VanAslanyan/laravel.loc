@@ -12,7 +12,6 @@ class Website extends Model
     protected $fillable = [
         'id',
         'url',
-
     ];
 
     public function subscribers()
