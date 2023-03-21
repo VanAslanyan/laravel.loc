@@ -79,30 +79,7 @@ class WebsiteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-//    public function mailSend ($subscribe_id){
-//        if ($post) {
-//            $data = array(
-//                'name' => $url,
-//                'title' => $title,
-//                'description' => $description,
-//            );
-//            $subUser = Subscriber::select('email')->where('id', '!=', $subscribe_id)->get();
 
-//            foreach ($subUser as $recipient) {
-//                Mail::send('emails.email', $data, function ($m) use ($recipient) {
-//                    $m->to($recipient)->subject('new subscriber website');
-//
-//                });
-//            }
-//            return response()->json(['success' => 'Send emails successfully.']);
-
-//        } else {
-//            return false;
-//        }
-//
-//
-//
-//    }
     public
     function destroy(string $id)
     {

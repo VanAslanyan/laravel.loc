@@ -35,11 +35,14 @@ class UserController extends Controller
         ]);
         $name = $request->name;
         $email = $request->email;
-
-        $user = User::create([
-            'email' => $email,
-            'name' => $name,
-        ]);
+        if (User::select('email')->where('email', $email)->exists()) {
+            return 'Your email is already exists';
+        } else {
+            $user = User::create([
+                'email' => $email,
+                'name' => $name,
+            ]);
+        }
         if (!$user) {
             return abort(404);
 
