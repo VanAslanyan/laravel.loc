@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('/user',[UserController::class,'showUsers']);
+Route::post('/user',[UserController::class,'createUser']);
+Route::get('/subscribe',[SubscribeController::class,'showSubscribes']);
+Route::post('/subscribe',[SubscribeController::class,'createSubscribe']);
+Route::get('/website',[WebsiteController::class,'showWebsite']);
+Route::post('/website',[WebsiteController::class,'createWebsite']);
+Route::get('/post',[PostController::class,'showPosts']);
+Route::post('/post',[PostController::class,'createPost']);
 
-Route::resource('user',UserController::class);
-Route::resource('post',PostController::class);
-Route::resource('subscribe',SubscribeController::class);
-Route::resource('website',WebsiteController::class);
