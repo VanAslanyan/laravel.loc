@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Website::factory(5)->create();
         Subscriber::factory(10)->create();
-
         $this->call([
         ]);
 
