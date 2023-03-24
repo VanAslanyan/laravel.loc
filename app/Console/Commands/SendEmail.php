@@ -3,13 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SendingEmail;
-use App\Mail\EmailForm;
 use App\Models\Post;
 use App\Models\Subscriber;
 use App\Models\Website;
 use Illuminate\Console\Command;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 
 class SendEmail extends Command
 {
