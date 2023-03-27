@@ -23,4 +23,5 @@ class Website extends Model
     {
         return $this->hasMany(Post::class, 'website_id', 'id');
     }
+
 }

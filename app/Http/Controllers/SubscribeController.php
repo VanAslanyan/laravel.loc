@@ -10,8 +10,8 @@ class SubscribeController extends Controller
 
     public function showSubscribes()
     {
-        $sub = Subscriber::paginate(10);
-        return response()->json($sub);
+        $allSubscribers = Subscriber::with('user')->paginate(10);
+        return response()->json($allSubscribers);
     }
 
     public function createSubscribe(Request $request)
@@ -30,9 +30,7 @@ class SubscribeController extends Controller
                 'user_id' => $userId,
                 'website_id' => $websiteId,
             ]);
-            if (!$subscribe) {
-                return abort(404);
-            }
+
         }
         return 'Your  subscribe accepted';
     }

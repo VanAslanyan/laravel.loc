@@ -29,7 +29,7 @@ class EmailForm extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New post'.' '.$this->data['website_name'],
+            subject: 'New post '.$this->data['website_name'],
         );
     }
 

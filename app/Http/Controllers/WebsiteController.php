@@ -7,13 +7,11 @@ use Illuminate\Http\Request;
 
 class WebsiteController extends Controller
 {
-
     public function showWebsite()
     {
         $website = Website::with('subscribers', 'post')->paginate(10);
         return response()->json($website);
     }
-
     public function createWebsite(Request $request)
     {
         $request->validate([
@@ -22,7 +20,6 @@ class WebsiteController extends Controller
         $url = $request->url;
         $title = $request->title;
         $description = $request->description;
-
         if (Website::select()->where('url', $url)->exists()) {
             return 'Your site is subscribed to';
         } else {

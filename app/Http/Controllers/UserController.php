@@ -32,7 +32,7 @@ class UserController extends Controller
             ]);
         }
         if (!$user) {
-            return abort(404,'');
+            return 'us';
         }
         return 'Your user subscribed';
     }
