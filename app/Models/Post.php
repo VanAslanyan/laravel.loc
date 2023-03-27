@@ -20,4 +20,8 @@ class Post extends Model
     {
         return $this->belongsTo(Website::class,'id','website_id');
     }
+    public function sentEmails()
+    {
+        return $this->hasMany(SentEmail::class);
+    }
 }

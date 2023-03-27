@@ -4,7 +4,8 @@ namespace App\Console\Commands;
 
 use App\Jobs\SendingEmail;
 use App\Models\Post;
-use App\Models\Subscriber;
+use App\Models\SentEmail;
+
 use App\Models\Website;
 use Illuminate\Console\Command;
 use App\Models\User;
@@ -16,7 +17,7 @@ class SendEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'users:sendEmail';
+    protected $signature = 'send:email';
 
     /**
      * The console command description.
@@ -30,28 +31,36 @@ class SendEmail extends Command
      */
     public function handle(): void
     {
+        $unsentEmails = SentEmail::select()->where('sent_status', 0)->get();
+        foreach ($unsentEmails as $unsentEmail) {
+            $subscribers = User::select()->where('id', $unsentEmail->user_id)->get();
+            $posts = Post::select()->where('id', $unsentEmail->post_id)->get();
+            foreach ($posts as $post) {
+                $website = Website::select()->where('id', $post->website_id)->first();
+                $websiteName = parse_url($website->url, PHP_URL_HOST);
+                $chunkedSubscribers = $subscribers->chunk(100);
+                foreach ($chunkedSubscribers as $subscribers) {
+                    foreach ($subscribers as $users) {
+                        $userId = $users->user_id;
+                        $user = User::where('id', $userId)->get();
+                        $data = array(
+                            'website_name' => $websiteName,
+                            'title' => $post->title,
+                            'description' => $post->description,
+                        );
+                        $sendingEmail = SendingEmail::dispatch($data, $user);
+                        if ($sendingEmail) {
+                            SentEmail::where('sent_status', 0)
+                                ->update([
+                                    'sent_status' => 1,
+                                ]);
+                        } else {
+                            echo 'Email is not send';
 
-        $post = Post::orderBy('created_at', 'DESC')->first();
-        if ($post !== null) {
-            $website = Website::select()->where('id', '=', $post->website_id)->first();
-            $website_name = parse_url($website->url, PHP_URL_HOST);
-            $subscribers = Subscriber::select()->where('website_id', '=', $post->website_id)->get();
-            $chunkSubscribers = $subscribers->chunk(100);
-            foreach ($chunkSubscribers as $subscribers) {
-                foreach ($subscribers as $users) {
-                    $user_id = $users->user_id;
-                    $user = User::where('id', '=', $user_id)->get();
-                    $data = array(
-                        'website_name' => $website_name,
-                        'title' => $post->title,
-                        'description' => $post->description,
-                    );
-                    SendingEmail::dispatch($data, $user);
+                        }
+                    }
                 }
             }
-        } else {
-
-            echo( "Website  haven't new post ");
         }
     }
 }

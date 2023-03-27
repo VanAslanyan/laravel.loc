@@ -25,7 +25,12 @@ class User extends Authenticatable
 
     public function subscribeUser()
     {
-        return $this->hasMany(Subscriber::class,'user_id','id');
+        return $this->hasMany(Subscriber::class, 'user_id', 'id');
     }
 
-   }
+    public function sentEmailUsers()
+    {
+        return $this->hasMany(SentEmail::class);
+    }
+
+}

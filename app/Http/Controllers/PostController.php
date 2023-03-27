@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 
+use App\Models\SentEmail;
+use App\Models\Subscriber;
+use App\Models\User;
 use App\Models\Website;
 use Illuminate\Http\Request;
 
@@ -14,8 +17,6 @@ class PostController extends Controller
         $post = Post::paginate(10);
         return response()->json($post);
     }
-
-
     public function createPost(Request $request)
     {
         $request->validate([
@@ -32,7 +33,19 @@ class PostController extends Controller
                 'website_id' => $websiteId,
                 'title' => $title,
                 'description' => $description,
+
             ]);
+            $subscribers = Subscriber::select()->where('website_id', $websiteId)->get();
+            foreach ($subscribers as $subscriber) {
+                $users = User::select()->where('id', $subscriber->user_id)->get();
+                foreach ($users as $userId) {
+                    SentEmail::create([
+                        'user_id' => $userId->id,
+                        'post_id' => $websiteId,
+                    ]);
+                }
+
+            }
         } else {
             return 'Website is not exists';
         }
