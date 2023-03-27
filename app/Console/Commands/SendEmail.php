@@ -31,6 +31,7 @@ class SendEmail extends Command
      */
     public function handle(): void
     {
+        $new = 0;
         $unsentEmails = SentEmail::select()->where('sent_status', 0)->get();
         foreach ($unsentEmails as $unsentEmail) {
             $subscribers = User::select()->where('id', $unsentEmail->user_id)->get();
