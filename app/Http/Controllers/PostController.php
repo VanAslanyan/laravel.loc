@@ -14,8 +14,8 @@ class PostController extends Controller
 {
     public function showPosts()
     {
-        $post = Post::paginate(10);
-        return response()->json($post);
+        $posts = Post::paginate(10);
+        return response()->json($posts);
     }
     public function createPost(Request $request)
     {
@@ -25,15 +25,15 @@ class PostController extends Controller
             'description' => ['required', 'min:1', 'max:255']
         ]);
         $websiteId = $request->website_id;
-        Website::select()->where('id', '=', $websiteId)->first();
+        Website::select()->where('id', $websiteId)->first();
         $title = $request->title;
         $description = $request->description;
+
         if (Website::where('id', $websiteId)->exists()) {
             Post::create([
                 'website_id' => $websiteId,
                 'title' => $title,
                 'description' => $description,
-
             ]);
             $subscribers = Subscriber::select()->where('website_id', $websiteId)->get();
             foreach ($subscribers as $subscriber) {

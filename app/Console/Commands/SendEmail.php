@@ -54,9 +54,12 @@ class SendEmail extends Command
                                 ->update([
                                     'sent_status' => 1,
                                 ]);
+                            sleep(5);
+
+                            SentEmail::where('sent_status', 1)
+                                ->delete();
                         } else {
                             echo 'Email is not send';
-
                         }
                     }
                 }
