@@ -21,8 +21,10 @@ class StoreWebsiteRequest extends FormRequest
      */
     public function rules(): array
     {
+        $regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+
         return [
-            'url' => 'required|max:255'
+            'url' => 'required|regex:' . $regex
         ];
     }
 }
