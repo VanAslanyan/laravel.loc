@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Jobs\SendingEmail;
 use App\Models\Post;
 use App\Models\SentEmail;
-
 use App\Models\Website;
 use Illuminate\Console\Command;
 use App\Models\User;

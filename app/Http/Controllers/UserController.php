@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -15,12 +15,9 @@ class UserController extends Controller
     }
 
 
-    public function createUser(Request $request)
+    public function createUser(StoreUserRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'min:3', 'max:255'],
-            'email' => ['required', 'min:5', 'max:255']
-        ]);
+        $request->validated();
         $name = $request->name;
         $email = $request->email;
         if (User::select('email')->where('email', $email)->exists()) {

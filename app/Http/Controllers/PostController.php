@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
-
 use App\Models\SentEmail;
 use App\Models\Subscriber;
 use App\Models\User;
 use App\Models\Website;
-use Illuminate\Http\Request;
+
 
 class PostController extends Controller
 {
@@ -17,13 +17,10 @@ class PostController extends Controller
         $posts = Post::paginate(10);
         return response()->json($posts);
     }
-    public function createPost(Request $request)
+
+    public function createPost(StorePostRequest $request)
     {
-        $request->validate([
-            'website_id' => ['required'],
-            'title' => ['required', 'min:1', 'max:255'],
-            'description' => ['required', 'min:1', 'max:255']
-        ]);
+        $request->validated();
         $websiteId = $request->website_id;
         Website::select()->where('id', $websiteId)->first();
         $title = $request->title;
@@ -44,7 +41,6 @@ class PostController extends Controller
                         'post_id' => $websiteId,
                     ]);
                 }
-
             }
         } else {
             return 'Website is not exists';

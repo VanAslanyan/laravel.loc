@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Jobs;
-
 use App\Mail\EmailForm;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

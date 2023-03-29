@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('website_id');
-            $table -> string('title')->nullable();
-            $table -> string('description')->nullable();
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
             $table->foreign('website_id')->references('id')->on('websites')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

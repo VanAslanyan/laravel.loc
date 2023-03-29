@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSubscribeRequest;
 use App\Models\Subscriber;
-use Illuminate\Http\Request;
 
 class SubscribeController extends Controller
 {
@@ -14,12 +14,9 @@ class SubscribeController extends Controller
         return response()->json($allSubscribers);
     }
 
-    public function createSubscribe(Request $request)
+    public function createSubscribe(StoreSubscribeRequest $request)
     {
-        $request->validate([
-            'user_id' => ['required'],
-            'website_id' => ['required'],
-        ]);
+        $request->validated();
         $userId = $request->user_id;
         $websiteId = $request->website_id;
 

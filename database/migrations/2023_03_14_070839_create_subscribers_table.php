@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('subscribers', function (Blueprint $table) {
             $table->id();
-            $table ->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('website_id');
             $table->unique(['user_id','website_id']);
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('website_id')->references('id')->on('websites')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
-
         });
     }
 

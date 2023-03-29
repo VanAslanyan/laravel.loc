@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreWebsiteRequest;
 use App\Models\Website;
-use Illuminate\Http\Request;
 
 class WebsiteController extends Controller
 {
@@ -12,11 +12,10 @@ class WebsiteController extends Controller
         $website = Website::with('subscribers', 'post')->paginate(10);
         return response()->json($website);
     }
-    public function createWebsite(Request $request)
+
+    public function createWebsite(StoreWebsiteRequest $request)
     {
-        $request->validate([
-            'url' => ['required', 'max:255']
-        ]);
+        $request->validated();
         $url = $request->url;
         $title = $request->title;
         $description = $request->description;
