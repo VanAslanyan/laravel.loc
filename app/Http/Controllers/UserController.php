@@ -20,7 +20,7 @@ class UserController extends Controller
         $request->validated();
         $name = $request->name;
         $email = $request->email;
-        if (User::select('email')->where('email', $email)->exists()) {
+        if (User::query()->select('email')->where('email', $email)->exists()) {
             return 'Your email is already exists';
         } else {
             $user = User::query()->create([

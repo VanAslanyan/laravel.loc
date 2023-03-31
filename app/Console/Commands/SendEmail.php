@@ -30,18 +30,18 @@ class SendEmail extends Command
      */
     public function handle(): void
     {
-        $unsentEmails = SentEmail::select()->where('sent_status', 0)->get();
+        $unsentEmails = SentEmail::query()->select()->where('sent_status', 0)->get();
         foreach ($unsentEmails as $unsentEmail) {
-            $subscribers = User::select()->where('id', $unsentEmail->user_id)->get();
-            $posts = Post::select()->where('id', $unsentEmail->post_id)->get();
+            $subscribers = User::query()->select()->where('id', $unsentEmail->user_id)->get();
+            $posts = Post::query()->select()->where('id', $unsentEmail->post_id)->get();
             foreach ($posts as $post) {
-                $website = Website::select()->where('id', $post->website_id)->first();
+                $website = Website::query()->select()->where('id', $post->website_id)->first();
                 $websiteName = parse_url($website->url, PHP_URL_HOST);
                 $chunkedSubscribers = $subscribers->chunk(100);
                 foreach ($chunkedSubscribers as $subscribers) {
                     foreach ($subscribers as $users) {
                         $userId = $users->user_id;
-                        $user = User::where('id', $userId)->get();
+                        $user = User::query()->where('id', $userId)->get();
                         $data = array(
                             'website_name' => $websiteName,
                             'title' => $post->title,
@@ -49,13 +49,12 @@ class SendEmail extends Command
                         );
                         $sendingEmail = SendingEmail::dispatch($data, $user);
                         if ($sendingEmail) {
-                            SentEmail::where('sent_status', 0)
+                            SentEmail::query()->where('sent_status', 0)
                                 ->update([
                                     'sent_status' => 1,
                                 ]);
-                            sleep(5);
 
-                            SentEmail::where('sent_status', 1)
+                            SentEmail::query()->where('sent_status', 1)
                                 ->delete();
                         } else {
                             echo 'Email is not send';

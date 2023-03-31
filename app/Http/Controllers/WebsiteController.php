@@ -19,10 +19,10 @@ class WebsiteController extends Controller
         $url = $request->url;
         $title = $request->title;
         $description = $request->description;
-        if (Website::select()->where('url', $url)->exists()) {
+        if (Website::query()->select()->where('url', $url)->exists()) {
             return 'Your site is subscribed to';
         } else {
-            Website::create([
+            Website::query()->create([
                 'url' => $url,
                 'title' => $title,
                 'description' => $description

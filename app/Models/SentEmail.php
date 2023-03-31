@@ -22,7 +22,7 @@ class SentEmail extends Model
         return $this->belongsTo(Post::class, 'id', 'post_id');
     }
 
-    public function usersSentEmails()
+    public function usersSentEmail()
     {
         return $this->belongsTo(User::class, 'id', 'user_id');
     }

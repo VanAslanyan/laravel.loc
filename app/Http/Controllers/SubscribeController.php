@@ -20,10 +20,10 @@ class SubscribeController extends Controller
         $userId = $request->user_id;
         $websiteId = $request->website_id;
 
-        if (Subscriber::where('website_id', $websiteId)->where('user_id', $userId)->exists()) {
+        if (Subscriber::query()->where('website_id', $websiteId)->where('user_id', $userId)->exists()) {
             return 'your emails is already exists';
         } else {
-              Subscriber::create([
+              Subscriber::query()->create([
                 'user_id' => $userId,
                 'website_id' => $websiteId,
             ]);

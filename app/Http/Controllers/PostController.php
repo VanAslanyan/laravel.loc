@@ -14,7 +14,7 @@ class PostController extends Controller
 {
     public function showPosts()
     {
-        $posts = Post::paginate(10);
+        $posts = Post::query()->paginate(10);
         return response()->json($posts);
     }
 
@@ -22,21 +22,21 @@ class PostController extends Controller
     {
         $request->validated();
         $websiteId = $request->website_id;
-        Website::select()->where('id', $websiteId)->first();
+        Website::query()->select()->where('id', $websiteId)->first();
         $title = $request->title;
         $description = $request->description;
 
-        if (Website::where('id', $websiteId)->exists()) {
-            Post::create([
+        if (Website::query()->where('id', $websiteId)->exists()) {
+            Post::query()->create([
                 'website_id' => $websiteId,
                 'title' => $title,
                 'description' => $description,
             ]);
-            $subscribers = Subscriber::select()->where('website_id', $websiteId)->get();
+            $subscribers = Subscriber::query()->select()->where('website_id', $websiteId)->get();
             foreach ($subscribers as $subscriber) {
-                $users = User::select()->where('id', $subscriber->user_id)->get();
+                $users = User::query()->select()->where('id', $subscriber->user_id)->get();
                 foreach ($users as $userId) {
-                    SentEmail::create([
+                    SentEmail::query()->create([
                         'user_id' => $userId->id,
                         'post_id' => $websiteId,
                     ]);
